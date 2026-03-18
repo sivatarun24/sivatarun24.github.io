@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ambala Siva Tarun Reddy — SDE II</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1f1f2e;
+      --accent: #00e5ff;
+      --accent2: #ff6b35;
+      --text: #e8e8f0;
+      --muted: #6b6b88;
+      --card: #13131e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,107,53,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
+    .btn {
+      padding: 0.75rem 1.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 3rem; right: 4rem;
+      display: flex;
+      gap: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 3rem;
+    }
+
+    /* EXPERIENCE */
+    .exp-grid { display: grid; gap: 1.5rem; }
+
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transition: transform 0.3s;
+      transform-origin: bottom;
+    }
+    .exp-card:hover { border-color: var(--accent); transform: translateX(4px); }
+    .exp-card:hover::before { transform: scaleY(1); }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .exp-company {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .exp-date {
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      background: rgba(0,229,255,0.08);
+      padding: 0.2rem 0.7rem;
+      border-radius: 2px;
+    }
+
+    .exp-role {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .exp-points { list-style: none; display: grid; gap: 0.6rem; }
+    .exp-points li {
+      font-size: 0.83rem;
+      color: #c0c0d8;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.7;
+    }
+    .exp-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); }
+
+    .skill-cat {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-size: 0.72rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* LEADERSHIP */
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .lead-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .lead-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+    .lead-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .lead-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+    }
+
+    .lead-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+    /* EDUCATION */
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 720px;
+    }
+
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .edu-school { font-size: 0.85rem; color: var(--muted); }
+
+    .edu-badge {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--accent);
+    }
+    .edu-badge-label { font-size: 0.68rem; color: var(--muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* CONTACT */
+    .contact-grid {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.9rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer p { font-size: 0.72rem; color: var(--muted); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 5rem 1.5rem 4rem; }
+      section { padding: 4rem 1.5rem; }
+      .hero-stats { position: static; margin-top: 3rem; justify-content: flex-start; }
+      footer { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TARUN.DEV</div>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-tag">// Available · May 2026</div>
+  <h1 class="hero-name">Ambala<br/>Siva <span>Tarun</span><br/>Reddy</h1>
+  <div class="hero-title">Software Development Engineer II</div>
+  <p class="hero-desc">
+    Backend engineer specializing in distributed systems, microservice architecture, and high-scale infrastructure. Building systems that are fast, resilient, and built to last.
+  </p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn btn-primary">View Work</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">97%</div>
+      <div class="stat-label">Latency reduced</div>
+    </div>
+    <div>
+      <div class="stat-num">2+</div>
+      <div class="stat-label">Years industry</div>
+    </div>
+    <div>
+      <div class="stat-num">4.0</div>
+      <div class="stat-label">GPA</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// 01 — Work</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div class="exp-company">ESRI</div>
+        <div class="exp-date">Sep 2025 – Present</div>
+      </div>
+      <div class="exp-role">Software Development Engineer II</div>
+      <ul class="exp-points">
+        <li>Architected end-to-end Dockerization of a Java/Spring Boot stack with PostgreSQL/ArangoDB, automating environment provisioning for seamless deployment parity across the SDLC.</li>
+        <li>Spearheaded the Audit Logs product roadmap as technical owner, defining requirements and retention strategies for standardized JSON log generation integrated with SIEM platforms.</li>
+        <li>Engineered cross-stack integrations between ArcGIS Pro and Enterprise Portal, implementing metadata exchange protocols for complex dependency analysis within GIS ecosystems.</li>
+        <li>Developed a high-performance Java migration tool with D3.js visualizations, transforming raw JSON into actionable system insights to accelerate multi-version testing cycles.</li>
+        <li>Implemented comprehensive TestNG and Mockito suites achieving near-total code coverage to significantly reduce production regressions during rapid feature rollouts.</li>
+      </ul>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div class="exp-company">ESRI</div>
+        <div class="exp-date">May 2025 – Aug 2025</div>
+      </div>
+      <div class="exp-role">Software Product Development — Student Technician</div>
+      <ul class="exp-points">
+        <li>Designed and implemented a Java-based ArcGraph dependency analysis platform using Spring Boot and ArangoDB, enabling multi-portal graphs with visibility into enterprise item relationships.</li>
+        <li>Developed a cross-platform Java application using JNA to interface with Windows Registry and Linux configuration directories, integrating with ArcGIS Enterprise 12 for patch management.</li>
+      </ul>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div class="exp-company">Paytm — One97 Communications</div>
+        <div class="exp-date">Jun 2022 – Jun 2024</div>
+      </div>
+      <div class="exp-role">Software Engineer I</div>
+      <ul class="exp-points">
+        <li>Led full-scale architectural migration from a PHP-Laravel monolith to distributed Java microservices — reducing latency by 97%, infrastructure overhead by 70%, with 97% test coverage.</li>
+        <li>Engineered Nginx load balancing and Kafka async messaging integrations between CreditMate and Paytm, improving field operation response times by 48% and loan repayment rates by 60%.</li>
+        <li>Automated critical workflows using Java Schedulers and AWS (EC2/Lambda), cutting data purging time from 2 days to 10 minutes; secured APIs via OAuth 2.0 interceptors.</li>
+        <li>Built Prometheus metrics and Grafana dashboards into Java microservices to monitor P95/P99 latency; used Kibana logs to identify and resolve long-running queries.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// 02 — Stack</div>
+  <h2 class="section-title">Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-cat">Programming & Architecture</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Go</span>
+        <span class="skill-tag">PHP</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">System Design</span>
+        <span class="skill-tag">REST API</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-cat">Backend & Data Infrastructure</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Spring Boot</span>
+        <span class="skill-tag">Jersey</span>
+        <span class="skill-tag">Kafka</span>
+        <span class="skill-tag">Redis</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">ArangoDB</span>
+        <span class="skill-tag">Elasticsearch</span>
+        <span class="skill-tag">Nginx</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-cat">Cloud & DevOps</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS EC2</span>
+        <span class="skill-tag">AWS Lambda</span>
+        <span class="skill-tag">AWS S3</span>
+        <span class="skill-tag">GCP</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span>
+        <span class="skill-tag">CI/CD</span>
+        <span class="skill-tag">Jenkins</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-cat">Observability & Quality</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Grafana</span>
+        <span class="skill-tag">Prometheus</span>
+        <span class="skill-tag">Kibana</span>
+        <span class="skill-tag">JUnit</span>
+        <span class="skill-tag">Mockito</span>
+        <span class="skill-tag">TestNG</span>
+        <span class="skill-tag">OAuth2</span>
+        <span class="skill-tag">JWT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-label">// 03 — Impact</div>
+  <h2 class="section-title">Leadership</h2>
+  <div class="leadership-grid">
+    <div class="lead-card reveal">
+      <div class="lead-icon">🚨</div>
+      <div class="lead-title">On-Call Leadership</div>
+      <p class="lead-desc">Served as primary on-call manager (2 weeks/quarter), leading priority incident resolution, driving root cause analysis, publishing detailed postmortems, and coordinating fixes across product owners.</p>
+    </div>
+    <div class="lead-card reveal">
+      <div class="lead-icon">🤖</div>
+      <div class="lead-title">AI Integration & Strategy</div>
+      <p class="lead-desc">Orchestrated end-to-end AI tools integration into engineering workflows, boosting adoption by 25% and decreasing critical bug reports by 10%, tracked via Jira ticketing analysis.</p>
+    </div>
+    <div class="lead-card reveal">
+      <div class="lead-icon">🧑‍💻</div>
+      <div class="lead-title">Mentorship</div>
+      <p class="lead-desc">Empowered 3 junior engineers and interns by clarifying system impact and fostering ownership — resulting in 20% fewer code defects and 10 hours saved weekly on code review.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">// 04 — Education</div>
+  <h2 class="section-title">Education</h2>
+  <div class="edu-card reveal">
+    <div>
+      <div class="edu-degree">Masters in Computer Science</div>
+      <div class="edu-school">University of Colorado, Boulder &nbsp;·&nbsp; Aug 2024 – May 2026</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="edu-badge">4.0</div>
+      <div class="edu-badge-label">GPA</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// 05 — Connect</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <p style="font-size:0.88rem; color:var(--muted); margin-bottom:2rem; max-width:480px;">
+    Open to SDE II opportunities in backend and distributed systems engineering. Let's build something.
+  </p>
+  <div class="contact-grid">
+    <a class="contact-link" href="mailto:sivatarunreddy00@gmail.com">
+      <span>✉</span> sivatarunreddy00@gmail.com
+    </a>
+    <a class="contact-link" href="tel:+17203510925">
+      <span>✆</span> +1 720 351 0925
+    </a>
+    <a class="contact-link" href="https://linkedin.com/in/siva-tarun" target="_blank">
+      <span>in</span> LinkedIn
+    </a>
+    <a class="contact-link" href="https://github.com/sivatarun24" target="_blank">
+      <span>⌥</span> GitHub
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Ambala Siva Tarun Reddy. Built for GitHub Pages.</p>
+  <p style="color:var(--accent);">Available May 2026 ↗</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
