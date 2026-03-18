@@ -36,6 +36,8 @@
   .nav-links a { font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
   .nav-links a:hover, .nav-links a.active { color: var(--ink); }
   .nav-pill { font-family: var(--mono); font-size: .62rem; background: var(--green); color: #fff; padding: .28rem .75rem; border-radius: 100px; letter-spacing: .04em; }
+  .nav-wave { display: inline-block; animation: wave 2s ease-in-out infinite; transform-origin: 70% 70%; }
+  @keyframes wave { 0%,100%{transform:rotate(0deg)} 20%{transform:rotate(-15deg)} 40%{transform:rotate(14deg)} 60%{transform:rotate(-8deg)} 80%{transform:rotate(8deg)} }
 
   /* LAYOUT */
   .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
@@ -198,7 +200,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="#home" class="nav-logo">Siva <em>Tarun</em></a>
+    <a href="#home" class="nav-logo">Siva <em>Tarun</em> &nbsp;<span class="nav-wave">👋</span></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -495,9 +497,9 @@
 
 <footer>
   <div class="footer-inner">
-    <p>&copy; 2026 <strong>Siva Tarun</strong>. All rights reserved.</p>
+    <p>&copy; 2026 <strong>Siva Tarun Reddy</strong>. All rights reserved <span id="footerJoke" style="font-style:italic;cursor:pointer;" title="click for another">😄</span></p>
     <div class="footer-code">
-      <span class="cm">// built with Java &amp; coffee &nbsp;&middot;&nbsp; available Anytime</span>
+      <span class="cm" id="footerQuip">// no bugs were harmed in the making of this site</span>
     </div>
   </div>
 </footer>
@@ -603,6 +605,36 @@ setInterval(() => {
     roleEl.style.transform = 'translateY(0)';
   }, 500);
 }, 2500);
+
+// Footer jokes
+const jokes = [
+  '// no bugs were harmed in the making of this site',
+  '// git commit -m "hire me please"',
+  '// 99 bugs in the code, 99 bugs... you fix one, 127 more to go',
+  '// it works on my machine ¯\\_(ツ)_/¯',
+  '// sudo hire tarun',
+  '// caffeine.inject() → latency reduced by 97%',
+  '// this site passed all tests (there were no tests)',
+  '// import { job } from "opportunities"',
+];
+let ji = 0;
+const quip = document.getElementById('footerQuip');
+quip.style.transition = 'opacity .4s ease';
+
+function nextJoke() {
+  quip.style.opacity = '0';
+  setTimeout(() => {
+    ji = (ji + 1) % jokes.length;
+    quip.textContent = jokes[ji];
+    quip.style.opacity = '1';
+  }, 400);
+}
+
+// Auto rotate every 4 seconds
+setInterval(nextJoke, 4000);
+
+// Also clickable to skip ahead
+document.getElementById('footerJoke').addEventListener('click', nextJoke);
 </script>
 </body>
 </html>
