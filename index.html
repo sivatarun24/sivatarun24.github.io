@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Siva Tarun Reddy — SDE II</title>
+  <title>Siva Tarun — SDE II</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Epilogue:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
@@ -87,8 +87,10 @@
   .btn { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--sans); font-size: .8rem; font-weight: 500; letter-spacing: .03em; padding: .68rem 1.4rem; border-radius: 4px; transition: all .2s; }
   .btn-dark { background: var(--ink); color: var(--cream); }
   .btn-dark:hover { background: #2c2c30; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.18); }
-  .btn-outline { background: var(--green-lt); color: var(--green); border: 1.5px solid var(--green); }
-  .btn-outline:hover { background: var(--green); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,107,69,.2); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--rule); }
+  .btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .btn-download { background: var(--green-lt); color: var(--green); border: 1.5px solid var(--green); }
+  .btn-download:hover { background: var(--green); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,107,69,.2); }
 
   /* STATS */
   .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--rule); margin-top: 3rem; background: #fff; border-radius: 6px; overflow: hidden; }
@@ -175,6 +177,8 @@
   footer strong { color: var(--ink); font-weight: 500; }
   .footer-code { font-family: var(--mono); font-size: .65rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; }
   .footer-code .cm { color: #aab0b8; font-style: italic; }
+  /* #rotateRole { transition: opacity .3s ease; } */
+  #rotateRole { transition: opacity .5s ease, transform .5s ease; display: inline-block; }
 
   /* MOBILE */
   @media (max-width: 760px) {
@@ -194,7 +198,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="#home" class="nav-logo">Siva <em>Tarun</em> Reddy</a>
+    <a href="#home" class="nav-logo">Siva <em>Tarun</em></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -212,7 +216,7 @@
     <div class="hero-top">
       <div>
         <div class="hero-eyebrow">Software Development Engineer II</div>
-        <h1 class="hero-name">Siva Tarun<br/><span>Reddy</span></h1>
+        <h1 class="hero-name">Siva<span>Tarun</span></h1>
         <p class="hero-sub">Backend systems &nbsp;&middot;&nbsp; Distributed architecture &nbsp;&middot;&nbsp; Cloud infrastructure</p>
         <div class="typing-wrap">
           <span class="typing-prefix">$ building with&nbsp;</span>
@@ -232,7 +236,7 @@
     </div>
     <div class="hero-btns">
       <a href="#contact" class="btn btn-dark">Get in Touch</a>
-      <a href="Ambala_Siva_Tarun_Reddy_Resume.pdf" download class="btn btn-outline">
+      <a href="Ambala_Siva_Tarun_Reddy_Resume.pdf" download class="btn btn-download">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download Resume
       </a>
@@ -271,22 +275,22 @@
         </div>
         <!-- code snippet card -->
         <div class="code-card">
-          <div class="code-bar">
-            <div class="code-dot" style="background:#ff5f57"></div>
-            <div class="code-dot" style="background:#ffbd2e"></div>
-            <div class="code-dot" style="background:#28ca41"></div>
-            <span class="code-filename">tarun.config.ts</span>
-          </div>
-          <div class="code-body">
-            <div><span class="ln">1</span><span class="kw">const</span> <span class="nm">engineer</span> = {</div>
-            <div><span class="ln">2</span>&nbsp;&nbsp;<span class="nm">name</span>: <span class="str">"Siva Tarun Reddy"</span>,</div>
-            <div><span class="ln">3</span>&nbsp;&nbsp;<span class="nm">stack</span>: [<span class="str">"Java"</span>, <span class="str">"Kafka"</span>, <span class="str">"AWS"</span>],</div>
-            <div><span class="ln">4</span>&nbsp;&nbsp;<span class="nm">gpa</span>: <span class="nm">4.0</span>,</div>
-            <div><span class="ln">5</span>&nbsp;&nbsp;<span class="nm">available</span>: <span class="str">"May 2026"</span>,</div>
-            <div><span class="ln">6</span>};</div>
-            <div><span class="ln">7</span><span class="cm">// open to new opportunities</span></div>
-          </div>
+        <div class="code-bar">
+          <div class="code-dot" style="background:#ff5f57"></div>
+          <div class="code-dot" style="background:#ffbd2e"></div>
+          <div class="code-dot" style="background:#28ca41"></div>
+          <span class="code-filename">tarun.config.ts</span>
         </div>
+        <div class="code-body">
+          <div><span class="ln">1</span><span class="kw">const</span> <span class="nm">engineer</span> = {</div>
+          <div><span class="ln">2</span>&nbsp;&nbsp;<span class="nm">name</span>: <span class="str">"Siva Tarun Reddy"</span>,</div>
+          <div><span class="ln">3</span>&nbsp;&nbsp;<span class="nm">role</span>: <span class="str" id="rotateRole">"Backend Engineer"</span>,</div>
+          <div><span class="ln">4</span>&nbsp;&nbsp;<span class="nm">gpa</span>: <span class="nm">4.0</span>,</div>
+          <div><span class="ln">5</span>&nbsp;&nbsp;<span class="nm">available</span>: <span class="str">"Anytime"</span>,</div>
+          <div><span class="ln">6</span>};</div>
+          <div><span class="ln">7</span><span class="cm">// open to new opportunities</span></div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -491,9 +495,9 @@
 
 <footer>
   <div class="footer-inner">
-    <p>&copy; 2026 <strong>Siva Tarun Reddy</strong>. All rights reserved.</p>
+    <p>&copy; 2026 <strong>Siva Tarun</strong>. All rights reserved.</p>
     <div class="footer-code">
-      <span class="cm">// built with Java &amp; coffee &nbsp;&middot;&nbsp; available May 2026</span>
+      <span class="cm">// built with Java &amp; coffee &nbsp;&middot;&nbsp; available Anytime</span>
     </div>
   </div>
 </footer>
@@ -538,7 +542,7 @@ const sObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
     countUp(document.getElementById('s1'), 97, 0, 1400);
     countUp(document.getElementById('s2'), 70, 0, 1400);
-    countUp(document.getElementById('s3'), 2,  0, 1000);
+    countUp(document.getElementById('s3'), 3,  0, 1000);
     countUp(document.getElementById('s4'), 4.0, 1, 1200);
     sObs.disconnect();
   }
@@ -577,6 +581,28 @@ document.getElementById('contactForm').addEventListener('submit', async function
   } catch { status.textContent = 'Something went wrong. Please email me directly.'; status.className = 'form-status err'; }
   btn.textContent = 'Send Message'; btn.disabled = false;
 });
+// Rotating role in code card
+const roles = [
+  '"Backend Engineer"',
+  '"Distributed Systems"',
+  '"Cloud & DevOps"',
+  '"Microservices Architect"',
+  '"AI / ML Infra"',
+  '"System Design"',
+  '"Open to Work"',
+];
+let ri = 0;
+const roleEl = document.getElementById('rotateRole');
+setInterval(() => {
+  roleEl.style.opacity = '0';
+  roleEl.style.transform = 'translateY(-4px)';
+  setTimeout(() => {
+    ri = (ri + 1) % roles.length;
+    roleEl.textContent = roles[ri];
+    roleEl.style.opacity = '1';
+    roleEl.style.transform = 'translateY(0)';
+  }, 500);
+}, 2500);
 </script>
 </body>
 </html>
