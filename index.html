@@ -95,7 +95,7 @@
   .btn-download:hover { background: var(--green); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,107,69,.2); }
 
   /* STATS */
-  .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--rule); margin-top: 3rem; background: #fff; border-radius: 6px; overflow: hidden; }
+  .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--rule); margin-top: 3rem; background: #fff; border-radius: 6px; overflow: visible; }
   .stat { padding: 1.4rem 1.6rem; border-right: 1px solid var(--rule); }
   .stat:last-child { border-right: none; }
   .stat-n { font-family: var(--serif); font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: .15rem; }
@@ -194,6 +194,16 @@
     .lead-grid { grid-template-columns: 1fr; }
     section { padding: 3.5rem 0; }
   }
+
+  @keyframes wiggle { 0%,100%{transform:translateY(-1px) rotate(0deg)} 25%{transform:rotate(-2deg)} 75%{transform:rotate(2deg)} }
+  .btn-dark:hover { animation: wiggle .4s ease; }
+  .contact-tagline::after { content: ' 👇'; }
+
+  /* REAL TALK CARD */
+  #realTalkCard { display:none; margin-top:1.5rem; background:#fff; border:1px solid var(--rule); border-radius:6px; padding:1.5rem; font-size:.82rem; color:var(--ink-soft); line-height:1.9; animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both; }
+  @keyframes popIn { from{opacity:0;transform:scale(.85) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+  @keyframes confettiFall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
   </style>
 </head>
 <body>
@@ -264,6 +274,14 @@
         <p>I'm a backend-focused software engineer with a passion for building systems that scale reliably under pressure. Over 2+ years in industry, I've led architectural migrations, owned product roadmaps, and built infrastructure that handles millions of transactions.</p>
         <p>At Paytm, I spearheaded a full monolith-to-microservices migration that cut system latency by 97%. At ESRI, I architect distributed GIS data pipelines and own the Audit Logs product roadmap end-to-end.</p>
         <p>Currently finishing my Master's in Computer Science at the University of Colorado Boulder &mdash; graduating May 2026 and actively looking for SDE II opportunities in backend engineering and distributed systems.</p>
+
+      <div id="realTalkCard">
+        <div class="card-label" style="font-family:var(--mono);font-size:.6rem;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem;"></div>
+        <p>🐛 &nbsp;I have never written a bug. Only "undocumented features."</p>
+        <p>☕ &nbsp;My P99 latency is proportional to cups of coffee consumed.</p>
+        <p>📦 &nbsp;I Dockerize everything. Including my opinions.</p>
+        <p>🤝 &nbsp;Will work for interesting distributed systems problems (and salary).</p>
+      </div>
       </div>
       <div>
         <div class="edu-card">
@@ -502,6 +520,21 @@
       <span class="cm" id="footerQuip">// no bugs were harmed in the making of this site</span>
     </div>
   </div>
+  <!-- Easter egg cheat sheet — hidden in plain sight -->
+  <div style="text-align:center;padding:.6rem;font-family:var(--mono);font-size:.52rem;color:var(--rule);letter-spacing:.06em;transition:color .4s;" 
+       onmouseenter="this.style.color='var(--muted)'" 
+       onmouseleave="this.style.color='var(--rule)'"
+       title="shh, secrets">
+    🥚 &nbsp;
+    hover stats &nbsp;·&nbsp;
+    konami code (↑↑↓↓←→←→BA) &nbsp;·&nbsp;
+    click logo ×5 &nbsp;·&nbsp;
+    type "hire" &nbsp;·&nbsp;
+    idle 20s &nbsp;·&nbsp;
+    triple-click GPA &nbsp;·&nbsp;
+    open devtools &nbsp;·&nbsp;
+    send a message
+  </div>
 </footer>
 
 <script>
@@ -578,7 +611,85 @@ document.getElementById('contactForm').addEventListener('submit', async function
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ name: document.getElementById('fname').value, email: document.getElementById('femail').value, message: document.getElementById('fmsg').value })
     });
-    if (res.ok) { status.textContent = 'Message sent! I\'ll be in touch soon.'; status.className = 'form-status ok'; this.reset(); }
+    // if (res.ok) { status.textContent = 'Message sent! I\'ll be in touch soon.'; status.className = 'form-status ok'; this.reset(); }
+    // if (res.ok) {
+    //   status.innerHTML = '✓ Message sent! Tarun is already panicking with excitement 🎉';
+    //   status.className = 'form-status ok';
+    //   this.reset();
+
+    //   // Reveal the real talk card with a delay for drama
+    //   setTimeout(() => {
+    //     const card = document.getElementById('realTalkCard');
+    //     card.style.display = 'block';
+    //     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    //     // Fake "typing" the label text
+    //     const label = card.querySelector('.card-label');
+    //     const text = '// unlocked: real talk 🔓';
+    //     let i = 0;
+    //     label.textContent = '';
+    //     const t = setInterval(() => {
+    //       label.textContent += text[i++];
+    //       if (i >= text.length) clearInterval(t);
+    //     }, 45);
+    //   }, 1200);
+    // }
+    if (res.ok) {
+      status.innerHTML = '✓ Transmitted. Initializing...';
+      status.className = 'form-status ok';
+      this.reset();
+
+      // Hacking animation then flip the card
+      setTimeout(() => {
+        const formCard = document.querySelector('.form-card');
+        const hackLines = [
+          '> message_received.exe',
+          '> decrypting payload...',
+          '> identity verified ✓',
+          '> trust_level = "high"',
+          '> unlocking /real-talk...',
+          '> access granted 🔓',
+        ];
+        let li = 0;
+        formCard.innerHTML = '<div id="hackScreen" style="font-family:var(--mono);font-size:.72rem;color:var(--green);padding:2rem;min-height:300px;background:#fff;border-radius:6px;line-height:2;"></div>';
+        const screen = document.getElementById('hackScreen');
+
+        function typeLine() {
+          if (li >= hackLines.length) {
+            setTimeout(showRealTalk, 600);
+            return;
+          }
+          const line = document.createElement('div');
+          line.style.opacity = '0';
+          screen.appendChild(line);
+          let ci = 0;
+          const txt = hackLines[li++];
+          line.style.opacity = '1';
+          const t = setInterval(() => {
+            line.textContent = txt.slice(0, ++ci);
+            if (ci >= txt.length) { clearInterval(t); setTimeout(typeLine, 200); }
+          }, 35);
+        }
+        typeLine();
+
+        function showRealTalk() {
+          formCard.style.transition = 'opacity .4s ease';
+          formCard.style.opacity = '0';
+          setTimeout(() => {
+            formCard.innerHTML = `
+              <div style="background:#fff;border-radius:6px;padding:2rem;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;">
+                <div style="font-family:var(--mono);font-size:.6rem;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;">// real talk — unlocked 🔓</div>
+                <p style="font-size:.85rem;color:var(--ink-soft);line-height:2;">🐛 &nbsp;I have never written a bug. Only "undocumented features."</p>
+                <p style="font-size:.85rem;color:var(--ink-soft);line-height:2;">☕ &nbsp;My P99 latency is proportional to cups of coffee consumed.</p>
+                <p style="font-size:.85rem;color:var(--ink-soft);line-height:2;">📦 &nbsp;I Dockerize everything. Including my opinions.</p>
+                <p style="font-size:.85rem;color:var(--ink-soft);line-height:2;">🤝 &nbsp;Will work for interesting problems (and salary).</p>
+                <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-family:var(--mono);font-size:.65rem;color:var(--muted);">// thanks for reaching out — Tarun will be in touch soon 🚀</div>
+              </div>`;
+            formCard.style.opacity = '1';
+          }, 400);
+        }
+      }, 800);
+    }
     else { throw new Error(); }
   } catch { status.textContent = 'Something went wrong. Please email me directly.'; status.className = 'form-status err'; }
   btn.textContent = 'Send Message'; btn.disabled = false;
@@ -635,6 +746,120 @@ setInterval(nextJoke, 4000);
 
 // Also clickable to skip ahead
 document.getElementById('footerJoke').addEventListener('click', nextJoke);
+
+// ── CONSOLE EASTER EGG ──
+console.log('%c👋 Hey recruiter!', 'font-size:24px; font-weight:bold; color:#1a6b45;');
+console.log('%cSince you opened DevTools, you clearly have good taste.', 'font-size:14px; color:#3d3d42;');
+console.log('%cTarun reduced latency by 97%. Imagine what he could do for YOUR stack. 👀', 'font-size:13px; color:#8c8c94;');
+console.log('%c→ sivatarunreddy00@gmail.com', 'font-size:13px; color:#1a6b45; font-weight:bold;');
+
+// ── KONAMI CODE ──
+const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'];
+let ki = 0;
+document.addEventListener('keydown', e => {
+  if (e.key === konami[ki]) { ki++; } else { ki = 0; }
+  if (ki === konami.length) {
+    ki = 0;
+    const toast = document.createElement('div');
+    toast.innerHTML = '🎮 Cheat code unlocked!<br><small style="font-family:var(--mono);font-size:.7rem;opacity:.8">You found the easter egg. Tarun also over-engineers portfolio sites apparently. <a href="#contact" style="color:#fff;text-decoration:underline;">Hire him anyway →</a></small>';
+    toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:1rem 1.8rem;border-radius:8px;font-family:var(--sans);font-size:.9rem;z-index:9999;text-align:center;line-height:1.6;box-shadow:0 8px 30px rgba(0,0,0,.3);animation:slideUp .4s ease;';
+    document.head.insertAdjacentHTML('beforeend', '<style>@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}</style>');
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .5s'; setTimeout(()=>toast.remove(), 500); }, 5000);
+  }
+});
+
+// ── STAT TOOLTIPS ──
+const statFunnies = [
+  'Yes, 97%. The monolith was basically a slow cooker ♨️',
+  'Saved so much infra cost, the CFO asked if we fired someone 💸',
+  'And counting. The clock never stops ⏱️',
+  'Not a typo. 4.0. In. Computer. Science. 🎓',
+];
+document.querySelectorAll('.stat').forEach((s, i) => {
+  const tip = document.createElement('div');
+  tip.textContent = statFunnies[i];
+  tip.style.cssText = 'display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.5rem .9rem;border-radius:4px;font-family:var(--mono);font-size:.62rem;white-space:nowrap;z-index:10;line-height:1.5;pointer-events:none;';
+  s.style.position = 'relative';
+  s.appendChild(tip);
+  s.addEventListener('mouseenter', () => tip.style.display = 'block');
+  s.addEventListener('mouseleave', () => tip.style.display = 'none');
+});
+
+// ── EASTER EGG: Click logo 5 times ──
+let logoClicks = 0;
+document.querySelector('.nav-logo').addEventListener('click', (e) => {
+  e.preventDefault();
+  logoClicks++;
+  if (logoClicks === 5) {
+    logoClicks = 0;
+    const toast = document.createElement('div');
+    toast.innerHTML = '🤓 Stop clicking me and just hire him already.';
+    toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.8rem 1.6rem;border-radius:6px;font-family:var(--mono);font-size:.75rem;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:slideUp .3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(),400); }, 3000);
+  }
+});
+
+// ── EASTER EGG: Type "hire" anywhere ──
+let typed = '';
+document.addEventListener('keydown', e => {
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  typed += e.key.toLowerCase();
+  typed = typed.slice(-4);
+  if (typed === 'hire') {
+    typed = '';
+    // Confetti burst
+    for (let i = 0; i < 60; i++) {
+      const c = document.createElement('div');
+      const colors = ['#1a6b45','#ffb347','#e8f3ed','#18181b'];
+      c.style.cssText = `position:fixed;top:0;left:${Math.random()*100}vw;width:8px;height:8px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};z-index:9999;pointer-events:none;animation:confettiFall ${1.5+Math.random()}s ease forwards;transform:rotate(${Math.random()*360}deg);`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2500);
+    }
+    const toast = document.createElement('div');
+    toast.innerHTML = '🎉 Great taste! Now click "Get in Touch" 👆';
+    toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:.8rem 1.6rem;border-radius:6px;font-family:var(--mono);font-size:.75rem;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(26,107,69,.3);animation:slideUp .3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(),400); }, 3000);
+  }
+});
+
+// ── EASTER EGG: 20s idle ──
+let idleTimer;
+function resetIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    const toast = document.createElement('div');
+    toast.innerHTML = '👀 Still reading? Tarun wrote a lot of good stuff.<br><small style="opacity:.7;font-size:.65rem;">...or just scroll to the bottom and hit contact.</small>';
+    toast.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:var(--cream);padding:1rem 1.4rem;border-radius:6px;font-family:var(--mono);font-size:.72rem;z-index:9999;line-height:1.7;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:slideUp .3s ease;max-width:280px;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .5s'; setTimeout(()=>toast.remove(),500); }, 5000);
+  }, 20000);
+}
+['mousemove','keydown','scroll','click'].forEach(ev => document.addEventListener(ev, resetIdle, {passive:true}));
+resetIdle();
+
+// ── EASTER EGG: Triple-click the GPA ──
+let gpaClicks = 0, gpaTimer;
+document.querySelector('.edu-gpa').addEventListener('click', () => {
+  gpaClicks++;
+  clearTimeout(gpaTimer);
+  gpaTimer = setTimeout(() => gpaClicks = 0, 500);
+  if (gpaClicks >= 3) {
+    gpaClicks = 0;
+    const el = document.querySelector('.edu-gpa');
+    el.style.transition = 'transform .2s';
+    el.style.transform = 'scale(1.4)';
+    el.title = '';
+    setTimeout(() => el.style.transform = 'scale(1)', 300);
+    const toast = document.createElement('div');
+    toast.innerHTML = '💯 Yes that\'s real. No curves. No extra credit. Just vibes and hard work.';
+    toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.8rem 1.6rem;border-radius:6px;font-family:var(--mono);font-size:.72rem;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:slideUp .3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(),400); }, 3500);
+  }
+});
 </script>
 </body>
 </html>
